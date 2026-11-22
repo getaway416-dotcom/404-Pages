@@ -1,5 +1,15 @@
 # Free 404 Pages
 
+<p align="center">
+  <a href="https://YOUR-WEBSITE-URL.com">
+    🌐 Visit Website
+  </a>
+</p>
+
+<p align="center">
+  <img src="images/404.png" width="100%" alt="Free 404 Pages Website Preview">
+</p>
+
 A free open-source collection of creative, modern, and beautiful 404 error page designs for developers and designers.
 
 Discover unique 404 page templates, preview their designs, and get the source code for free. Use them in your personal websites, portfolios, and projects.
@@ -22,6 +32,8 @@ Our goal is to provide developers with free, high-quality 404 page designs witho
 ## 🛠️ Technologies
 
 - HTML5
+- CSS3
+- JavaScript
 
 ## 📜 License
 
@@ -31,4 +43,8 @@ Each template should include its own license. Check the license before using or 
 
 Have a creative 404 page design? Contributions are welcome!
 
-**Free 404 Pages — Beautiful error pages for everyone.**
+---
+
+<p align="center">
+  <b>Free 404 Pages — Beautiful error pages for everyone.</b>
+</p>
