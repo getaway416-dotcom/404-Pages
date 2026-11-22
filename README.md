@@ -22,8 +22,6 @@ Our goal is to provide developers with free, high-quality 404 page designs witho
 ## 🛠️ Technologies
 
 - HTML5
-- CSS3
-- JavaScript
 
 ## 📜 License
 
