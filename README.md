@@ -1,13 +1,15 @@
 # Free 404 Pages
 
+
+
+<p align="center">
+  <img src="images/404.png" width="100%" alt="Free 404 Pages Website Preview">
+</p>
+
 <p align="center">
   <a href="https://YOUR-WEBSITE-URL.com">
     🌐 Visit Website
   </a>
-</p>
-
-<p align="center">
-  <img src="images/404.png" width="100%" alt="Free 404 Pages Website Preview">
 </p>
 
 A free open-source collection of creative, modern, and beautiful 404 error page designs for developers and designers.
