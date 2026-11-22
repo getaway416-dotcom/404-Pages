@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <a href="https://getaway416-dotcom.github.io/404-Pages/">
+  <a href="https://zrong-me.github.io/404-Pages/">
     🌐 Visit Website
   </a>
 </p>
