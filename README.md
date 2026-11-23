@@ -2,7 +2,7 @@
 # 404 Pages Gallery
 
 <p align="center">
-  <img src="page/404/404.png" alt="404 page preview" width="100%">
+  <img src="img/main.jpg" alt="404 page preview" width="100%">
 </p>
 
 <p align="center">
