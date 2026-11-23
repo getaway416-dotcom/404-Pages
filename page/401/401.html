@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080405">
+<title>401 — Red Particle Reassembly</title>
+
+<style>
+:root {
+  --red: 255, 55, 65;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse at 50% 45%,
+      #491018 0%,
+      #1a080d 48%,
+      #080405 100%
+    );
+  color: #fff0f0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Background grid */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .2;
+  background-image:
+    linear-gradient(#ff454518 1px, transparent 1px),
+    linear-gradient(90deg, #ff454518 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(
+    ellipse at center,
+    #000,
+    transparent 78%
+  );
+}
+
+/* Background glow */
+
+body::after {
+  content: "";
+  position: fixed;
+  width: 450px;
+  height: 450px;
+  left: 50%;
+  top: 43%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #ff1515;
+  filter: blur(180px);
+  opacity: .09;
+  pointer-events: none;
+}
+
+canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  touch-action: pan-y;
+}
+
+/* Main content */
+
+.ui {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: clamp(28px, 7vh, 68px);
+  transform: translateX(-50%);
+  width: min(92%, 520px);
+  text-align: center;
+}
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: #ff6868;
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-shadow: 0 0 15px #ff2222;
+}
+
+.message {
+  font-size: clamp(14px, 2vw, 17px);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #e9c4c8;
+  margin: 0 0 20px;
+}
+
+/* Button */
+
+button {
+  border: 1px solid rgba(var(--red), .65);
+  border-radius: 8px;
+  padding: 12px 27px;
+  background: rgba(65, 10, 18, .5);
+  color: #ff8585;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: .25s;
+  backdrop-filter: blur(8px);
+}
+
+button:hover {
+  background: #ff4545;
+  color: #160404;
+  box-shadow: 0 0 28px #ff151555;
+  transform: translateY(-2px);
+}
+
+button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+
+.hint {
+  font-size: 10px;
+  color: #a16b72;
+  letter-spacing: 1px;
+  margin-top: 14px;
+}
+
+/* Mobile */
+
+@media(max-width:520px) {
+  .ui {
+    bottom: 7vh;
+  }
+
+  .message {
+    font-size: 13px;
+  }
+
+  .hint {
+    font-size: 9px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  button {
+    transition: none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particleCanvas"
+  aria-label="Interactive 401 particle animation">
+</canvas>
+
+<section class="ui">
+
+  <div class="eyebrow">
+    ACCESS DENIED · ERROR 401
+  </div>
+
+  <p class="message">
+    The page is hidden in particles
+  </p>
+
+  <button id="homeButton" type="button">
+    Return home
+  </button>
+
+  <div class="hint">
+    MOVE YOUR CURSOR OR TOUCH THE PARTICLES
+  </div>
+
+</section>
+
+<script>
+const canvas = document.getElementById("particleCanvas");
+const ctx = canvas.getContext("2d", { alpha: true });
+
+let particles = [];
+let w = 0;
+let h = 0;
+let dpr = 1;
+let raf = 0;
+
+const pointer = {
+  x: null,
+  y: null,
+  radius: 125
+};
+
+/* Pointer interaction */
+
+function setPointer(e) {
+  pointer.x = e.clientX;
+  pointer.y = e.clientY;
+}
+
+window.addEventListener("pointermove", setPointer, {
+  passive: true
+});
+
+window.addEventListener("pointerleave", () => {
+  pointer.x = null;
+  pointer.y = null;
+});
+
+window.addEventListener("pointerdown", setPointer, {
+  passive: true
+});
+
+window.addEventListener("pointerup", () => {
+  pointer.x = null;
+  pointer.y = null;
+});
+
+/* Particle class */
+
+class Particle {
+
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+
+    this.baseX = x;
+    this.baseY = y;
+
+    this.size = 1.35 + Math.random() * .8;
+    this.density = 4 + Math.random() * 18;
+    this.maxOffset = 12 + Math.random() * 20;
+  }
+
+  draw() {
+
+    // Red particle glow
+
+    ctx.beginPath();
+    ctx.arc(
+      this.x,
+      this.y,
+      this.size * 3.8,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fillStyle = "rgba(255, 35, 55, .15)";
+    ctx.fill();
+
+    // Particle center
+
+    ctx.beginPath();
+    ctx.arc(
+      this.x,
+      this.y,
+      this.size,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fillStyle = "#ff5252";
+    ctx.shadowColor = "#ff1010";
+    ctx.shadowBlur = 12;
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+  }
+
+  update() {
+
+    if (pointer.x !== null && pointer.y !== null) {
+
+      const dx = pointer.x - this.x;
+      const dy = pointer.y - this.y;
+
+      const distance = Math.hypot(dx, dy) || .001;
+
+      if (distance < pointer.radius) {
+
+        const force =
+          (pointer.radius - distance) / pointer.radius;
+
+        this.x -=
+          (dx / distance) * force * this.density * 2.3;
+
+        this.y -=
+          (dy / distance) * force * this.density * 2.3;
+
+        const bx = this.x - this.baseX;
+        const by = this.y - this.baseY;
+
+        const d = Math.hypot(bx, by) || .001;
+
+        if (d > this.maxOffset) {
+          this.x = this.baseX + bx / d * this.maxOffset;
+          this.y = this.baseY + by / d * this.maxOffset;
+        }
+
+        return;
+      }
+    }
+
+    // Reassemble particles
+
+    this.x += (this.baseX - this.x) * .075;
+    this.y += (this.baseY - this.y) * .075;
+  }
+}
+
+/* Create 401 particles */
+
+function buildParticles() {
+
+  const rect = canvas.getBoundingClientRect();
+
+  w = rect.width;
+  h = rect.height;
+
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  canvas.width = Math.round(w * dpr);
+  canvas.height = Math.round(h * dpr);
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  particles = [];
+
+  const fontSize = Math.min(
+    w / 3.15,
+    Math.min(h * .49, 310)
+  );
+
+  ctx.font = `900 ${fontSize}px Arial, Helvetica, sans-serif`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  ctx.fillStyle = "#fff";
+
+  ctx.fillText("401", w / 2, h * .43);
+
+  const image = ctx.getImageData(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  const step = Math.max(5, Math.round(7 * dpr));
+
+  for (let py = 0; py < image.height; py += step) {
+
+    for (let px = 0; px < image.width; px += step) {
+
+      const index = (py * image.width + px) * 4;
+
+      if (image.data[index + 3] > 128) {
+
+        particles.push(
+          new Particle(px / dpr, py / dpr)
+        );
+
+      }
+    }
+  }
+}
+
+/* Animation loop */
+
+function animate() {
+
+  ctx.clearRect(0, 0, w, h);
+
+  for (const p of particles) {
+    p.update();
+    p.draw();
+  }
+
+  raf = requestAnimationFrame(animate);
+}
+
+/* Initialize */
+
+function init() {
+
+  cancelAnimationFrame(raf);
+
+  buildParticles();
+  animate();
+}
+
+let resizeTimer;
+
+window.addEventListener("resize", () => {
+
+  clearTimeout(resizeTimer);
+
+  resizeTimer = setTimeout(init, 120);
+
+});
+
+/* Navigation */
+
+document.getElementById("homeButton").addEventListener("click", () => {
+  window.location.href = "/";
+});
+
+document.addEventListener("keydown", e => {
+
+  if (e.key === "Escape") {
+    window.location.href = "/";
+  }
+
+});
+
+init();
+</script>
+
+</body>
+</html>

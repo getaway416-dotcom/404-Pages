@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#080b12" />
+
+    <title>404 Gallery — All Designs</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #080b12;
+        --card: #101722;
+        --blue: #168bff;
+        --cyan: #00c8ff;
+        --text: #f4f7ff;
+        --muted: #8995a8;
+        --border: #1e2b3d;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, sans-serif;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* Background animation */
+
+      body::before {
+        content: "";
+        position: fixed;
+        width: 550px;
+        height: 550px;
+        top: -300px;
+        left: 30%;
+        background: #087bff;
+        filter: blur(180px);
+        opacity: 0.13;
+        pointer-events: none;
+        z-index: -1;
+        animation: lightMove 12s ease-in-out infinite alternate;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        width: 400px;
+        height: 400px;
+        right: -200px;
+        bottom: -200px;
+        background: #00c8ff;
+        filter: blur(150px);
+        opacity: 0.1;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      @keyframes lightMove {
+        from {
+          transform: translateX(-100px);
+        }
+        to {
+          transform: translateX(150px);
+        }
+      }
+
+      /* Header */
+
+      header {
+        padding: 36px 6%;
+        border-bottom: 1px solid var(--border);
+        background: #090e18;
+        position: relative;
+        overflow: hidden;
+        animation: headerIn 0.7s ease both;
+      }
+
+      header::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--cyan),
+          transparent
+        );
+        animation: lineMove 5s linear infinite;
+      }
+
+      @keyframes lineMove {
+        to {
+          left: 150%;
+        }
+      }
+
+      @keyframes headerIn {
+        from {
+          opacity: 0;
+          transform: translateY(-15px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .logo {
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+      }
+
+      .logo span {
+        color: var(--blue);
+        text-shadow: 0 0 20px var(--blue);
+      }
+
+      header p {
+        color: var(--muted);
+        margin-top: 10px;
+        font-size: 14px;
+      }
+
+      /* Main */
+
+      main {
+        max-width: 1350px;
+        margin: auto;
+        padding: 36px 6% 90px;
+      }
+
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+        animation: fadeUp 0.7s 0.15s both;
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .toolbar h2 {
+        font-size: 24px;
+        letter-spacing: -0.8px;
+      }
+
+      .toolbar h2 span {
+        color: var(--blue);
+      }
+
+      .toolbar p {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 5px;
+      }
+
+      .search {
+        width: 270px;
+        background: #111925;
+        border: 1px solid #27374b;
+        color: white;
+        padding: 13px 15px;
+        border-radius: 10px;
+        outline: none;
+        transition: 0.3s;
+      }
+
+      .search::placeholder {
+        color: #718097;
+      }
+
+      .search:focus {
+        border-color: var(--blue);
+        box-shadow: 0 0 20px #168bff25;
+      }
+
+      /* Filters */
+
+      .filters {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+      }
+
+      .filter {
+        padding: 9px 15px;
+        background: #101722;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        font-size: 11px;
+        cursor: pointer;
+        transition: 0.25s;
+      }
+
+      .filter:hover,
+      .filter.active {
+        background: #087bff20;
+        border-color: var(--blue);
+        color: #65baff;
+      }
+
+      /* Cards */
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        opacity: 0;
+        animation: cardEnter 0.6s ease forwards;
+        transition:
+          transform 0.35s,
+          border-color 0.35s,
+          box-shadow 0.35s;
+      }
+
+      @keyframes cardEnter {
+        from {
+          opacity: 0;
+          transform: translateY(25px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .card:hover {
+        transform: translateY(-7px);
+        border-color: var(--blue);
+        box-shadow:
+          0 12px 35px #006eff20,
+          0 0 15px #168bff12;
+      }
+
+      .thumb {
+        height: 225px;
+        background: #101b2b;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+      }
+
+      .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s;
+      }
+
+      .card:hover .thumb img {
+        transform: scale(1.07);
+      }
+
+      .placeholder {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 75px;
+        font-weight: 900;
+        color: #168bff13;
+        pointer-events: none;
+      }
+
+      .page-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        padding: 7px 11px;
+        background: #071321ef;
+        border: 1px solid #168bff55;
+        border-radius: 6px;
+        color: #69baff;
+        font-size: 10px;
+        backdrop-filter: blur(10px);
+      }
+
+      .overlay {
+        position: absolute;
+        inset: 0;
+        background: #006eff35;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: 0.3s;
+      }
+
+      .card:hover .overlay {
+        opacity: 1;
+      }
+
+      .overlay span {
+        background: #087bff;
+        color: white;
+        padding: 11px 18px;
+        border-radius: 7px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .info {
+        padding: 18px;
+      }
+
+      .info h3 {
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .info p {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 8px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 9px;
+        margin-top: 18px;
+      }
+
+      button {
+        font-family: inherit;
+        cursor: pointer;
+      }
+
+      .btn {
+        flex: 1;
+        padding: 11px;
+        background: #1a2636;
+        color: #e3edff;
+        border: 1px solid #27374b;
+        border-radius: 7px;
+        font-size: 12px;
+        transition: 0.25s;
+      }
+
+      .btn:hover {
+        background: #24364d;
+        border-color: var(--blue);
+      }
+
+      .btn-primary {
+        background: linear-gradient(110deg, #087bff, #0062d5);
+        border-color: var(--blue);
+        color: white;
+        box-shadow: 0 3px 15px #087bff22;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(110deg, #168bff, #00aaff);
+        box-shadow: 0 0 20px #168bff55;
+        transform: translateY(-2px);
+      }
+
+      /* Empty state */
+
+      .empty {
+        display: none;
+        padding: 70px 20px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      .empty h3 {
+        color: white;
+        margin-bottom: 10px;
+      }
+
+      /* Preview modal */
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        background: #020711ed;
+        backdrop-filter: blur(12px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .modal.show {
+        display: flex;
+        animation: fadeModal 0.25s ease;
+      }
+
+      @keyframes fadeModal {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .modal-content {
+        background: #0d1624;
+        width: 100%;
+        max-width: 1250px;
+        height: 92vh;
+        border: 1px solid #168bff66;
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 0 60px #087bff25;
+        animation: modalEnter 0.3s ease;
+      }
+
+      @keyframes modalEnter {
+        from {
+          transform: scale(0.96) translateY(15px);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1) translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .modal-header {
+        padding: 13px 18px;
+        min-height: 58px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .modal-header h3 {
+        font-size: 13px;
+      }
+
+      .modal-buttons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .modal-buttons button {
+        padding: 9px 13px;
+        background: #16263b;
+        border: 1px solid #273d57;
+        color: white;
+        border-radius: 6px;
+      }
+
+      .modal-buttons button:hover {
+        border-color: var(--blue);
+      }
+
+      iframe {
+        width: 100%;
+        flex: 1;
+        border: none;
+        background: white;
+      }
+
+      /* Footer */
+
+      footer {
+        padding: 30px 20px;
+        text-align: center;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      footer span {
+        color: var(--blue);
+        font-weight: 700;
+      }
+
+      /* Responsive */
+
+      @media (max-width: 950px) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 600px) {
+        header {
+          padding: 30px 22px;
+        }
+
+        .logo {
+          font-size: 26px;
+        }
+
+        main {
+          padding: 28px 17px 70px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .search {
+          width: 100%;
+        }
+
+        .toolbar {
+          align-items: stretch;
+        }
+
+        .modal {
+          padding: 7px;
+        }
+
+        .modal-content {
+          height: 96vh;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="logo">404<span>.</span>Pages Gallery</div>
+      <p>Explore all your error page designs. Preview every page for free.</p>
+    </header>
+
+    <main>
+      <div class="toolbar">
+        <div>
+          <h2>All Designs <span>.</span></h2>
+          <p id="count">Scanning your collection...</p>
+        </div>
+
+        <input
+          type="search"
+          class="search"
+          id="search"
+          placeholder="⌕ Search 404 pages..."
+        />
+      </div>
+
+      <div class="filters">
+        <button class="filter active" data-filter="all">All Designs</button>
+        <button class="filter" data-filter="400">400 Series</button>
+        <button class="filter" data-filter="410">410 Only</button>
+      </div>
+
+      <div class="grid" id="grid"></div>
+
+      <div class="empty" id="empty">
+        <h3>No designs found</h3>
+        <p>Try another search.</p>
+      </div>
+    </main>
+
+    <footer>
+      <span>404.PAGES</span> — Free Error Page Collection <br /><br />
+      © 2026 All designs are free to explore.
+    </footer>
+
+    <!-- Preview window -->
+
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-title">404 Preview</h3>
+
+          <div class="modal-buttons">
+            <button id="open-page">↗ Open</button>
+            <button id="close-modal">✕ Close</button>
+          </div>
+        </div>
+
+        <iframe id="frame" title="404 preview"></iframe>
+      </div>
+    </div>
+
+    <script>
+      const grid = document.getElementById("grid");
+      const search = document.getElementById("search");
+      const count = document.getElementById("count");
+      const empty = document.getElementById("empty");
+      const modal = document.getElementById("modal");
+      const frame = document.getElementById("frame");
+
+      let designs = [];
+      let currentPage = null;
+      let activeFilter = "all";
+
+      // Check HTML files in folders 400–410
+      async function checkPage(number) {
+        const url = `page/${number}/${number}.html`;
+
+        try {
+          const response = await fetch(url, {
+            method: "HEAD",
+            cache: "no-store",
+          });
+
+          return response.ok ? number : null;
+        } catch {
+          return null;
+        }
+      }
+
+      // Automatic scanning
+      async function scanPages() {
+        count.textContent = "Scanning pages...";
+
+        const numbers = Array.from({ length: 11 }, (_, index) => 400 + index);
+
+        const results = await Promise.all(numbers.map(checkPage));
+
+        designs = results.filter((number) => number !== null);
+
+        count.textContent = `${designs.length} designs available`;
+
+        render();
+      }
+
+      // Display cards
+      function render() {
+        const query = search.value.trim().toLowerCase();
+
+        const filtered = designs.filter((number) => {
+          const matchesSearch = String(number).includes(query);
+
+          const matchesFilter =
+            activeFilter === "all" ||
+            (activeFilter === "400" && number >= 400 && number <= 409) ||
+            (activeFilter === "410" && number === 410);
+
+          return matchesSearch && matchesFilter;
+        });
+
+        grid.innerHTML = "";
+
+        filtered.forEach((number, index) => {
+          const folder = `page/${number}/`;
+          const html = `${folder}${number}.html`;
+
+          const card = document.createElement("article");
+          card.className = "card";
+          card.style.animationDelay = `${Math.min(index * 0.06, 0.6)}s`;
+
+          const thumb = document.createElement("div");
+          thumb.className = "thumb";
+          thumb.onclick = () => preview(number);
+
+          // Thumbnail image
+          const img = document.createElement("img");
+          img.src = `${folder}${number}.png`;
+          img.alt = `404 Design ${number}`;
+
+          img.onerror = () => {
+            if (!img.dataset.fallback) {
+              img.dataset.fallback = "true";
+              img.src = `${folder}404.png`;
+            } else {
+              img.remove();
+            }
+          };
+
+          const placeholder = document.createElement("div");
+          placeholder.className = "placeholder";
+          placeholder.textContent = number;
+
+          const badge = document.createElement("div");
+          badge.className = "page-badge";
+          badge.textContent = `PAGE ${number}`;
+
+          const overlay = document.createElement("div");
+          overlay.className = "overlay";
+
+          const overlayText = document.createElement("span");
+          overlayText.textContent = "VIEW PREVIEW ↗";
+
+          overlay.append(overlayText);
+
+          thumb.append(img, placeholder, badge, overlay);
+
+          const info = document.createElement("div");
+          info.className = "info";
+
+          const title = document.createElement("h3");
+          title.textContent = `404 Design #${number}`;
+
+          const description = document.createElement("p");
+          description.textContent = "Free website error page design";
+
+          const actions = document.createElement("div");
+          actions.className = "actions";
+
+          const previewBtn = document.createElement("button");
+          previewBtn.className = "btn btn-primary";
+          previewBtn.textContent = "Preview Design ↗";
+          previewBtn.onclick = () => preview(number);
+
+          const openBtn = document.createElement("button");
+          openBtn.className = "btn";
+          openBtn.textContent = "Open";
+          openBtn.onclick = () => {
+            window.open(html, "_blank");
+          };
+
+          actions.append(previewBtn, openBtn);
+          info.append(title, description, actions);
+
+          card.append(thumb, info);
+          grid.appendChild(card);
+        });
+
+        empty.style.display = filtered.length ? "none" : "block";
+      }
+
+      // Open live preview
+      function preview(number) {
+        currentPage = number;
+
+        document.getElementById("modal-title").textContent =
+          `404 DESIGN / ${number}`;
+
+        frame.src = `page/${number}/${number}.html`;
+
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+      }
+
+      // Close preview
+      function closePreview() {
+        modal.classList.remove("show");
+        frame.src = "about:blank";
+        document.body.style.overflow = "";
+        currentPage = null;
+      }
+
+      document.getElementById("close-modal").onclick = closePreview;
+
+      // Open page in new tab
+      document.getElementById("open-page").onclick = () => {
+        if (currentPage !== null) {
+          window.open(`page/${currentPage}/${currentPage}.html`, "_blank");
+        }
+      };
+
+      // Close when clicking outside
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          closePreview();
+        }
+      });
+
+      // ESC key
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closePreview();
+        }
+      });
+
+      // Search
+      search.addEventListener("input", render);
+
+      // Filters
+      document.querySelectorAll(".filter").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelector(".filter.active")?.classList.remove("active");
+
+          button.classList.add("active");
+
+          activeFilter = button.dataset.filter;
+
+          render();
+        });
+      });
+
+      // Start website
+      scanPages();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,467 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>402 — Starry Detour</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Nunito:wght@800;900&display=swap');
+
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ min-height:100vh;
+ display:grid;
+ place-items:center;
+ overflow:hidden;
+ color:#f4f7ff;
+ font-family:Manrope,sans-serif;
+ background:
+ radial-gradient(ellipse at 50% 100%,#173d70 0%,#142746 45%,#080f20 100%);
+}
+
+/* BLUE NEBULA BACKGROUND */
+
+.nebula{
+ position:fixed;
+ inset:-30%;
+ pointer-events:none;
+ background:
+ radial-gradient(ellipse at 25% 30%,#087dff30,transparent 35%),
+ radial-gradient(ellipse at 75% 60%,#00d9ff20,transparent 30%),
+ radial-gradient(ellipse at 50% 80%,#315bff25,transparent 35%);
+ filter:blur(65px);
+ animation:nebulaMove 16s ease-in-out infinite alternate;
+}
+
+@keyframes nebulaMove{
+ 0%{transform:translate(-3%,-2%) scale(1)}
+ 100%{transform:translate(4%,3%) scale(1.15)}
+}
+
+/* STAR CANVAS */
+
+#starCanvas{
+ position:fixed;
+ inset:0;
+ width:100%;
+ height:100%;
+ pointer-events:none;
+ z-index:1;
+}
+
+/* SHOOTING STARS */
+
+.shooting{
+ position:fixed;
+ width:120px;
+ height:2px;
+ background:linear-gradient(90deg,transparent,#75eaff,#fff);
+ box-shadow:0 0 12px #00cfff;
+ transform:rotate(-35deg);
+ animation:shoot 4s linear infinite;
+ opacity:0;
+ z-index:2;
+}
+
+.shot1{top:15%;left:15%;animation-delay:1s}
+.shot2{top:35%;left:65%;animation-delay:5s}
+.shot3{top:5%;left:80%;animation-delay:8s}
+.shot4{top:65%;left:30%;animation-delay:11s}
+
+@keyframes shoot{
+ 0%{transform:translate(0,0) rotate(-35deg);opacity:0}
+ 5%{opacity:1}
+ 35%{transform:translate(400px,300px) rotate(-35deg);opacity:0}
+ 100%{opacity:0}
+}
+
+/* LAYOUT */
+
+.wrap{
+ position:relative;
+ z-index:5;
+ width:min(1050px,94vw);
+ min-height:100vh;
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ align-items:center;
+ gap:20px;
+ padding:40px 34px 65px;
+}
+
+.visual{
+ height:min(650px,82vh);
+ min-height:430px;
+ position:relative;
+ display:grid;
+ place-items:center;
+}
+
+/* ROTATING ENERGY RINGS */
+
+.orbit{
+ position:absolute;
+ width:min(390px,38vw);
+ aspect-ratio:1;
+ border:1px solid #8ccaff55;
+ border-radius:50%;
+ box-shadow:0 0 40px #168dff22;
+ animation:rotate 25s linear infinite;
+}
+
+.orbit:before{
+ content:"";
+ position:absolute;
+ inset:25px;
+ border:1px dashed #8ccaff66;
+ border-radius:50%;
+}
+
+.orbit:after{
+ content:"";
+ position:absolute;
+ left:30px;
+ top:55px;
+ width:11px;
+ height:11px;
+ background:#b8e2ff;
+ border-radius:50%;
+ box-shadow:0 0 20px 5px #79caff;
+}
+
+.orbit2{
+ position:absolute;
+ width:min(330px,32vw);
+ aspect-ratio:1;
+ border:1px solid #00d9ff30;
+ border-radius:50%;
+ animation:rotate 18s linear infinite reverse;
+}
+
+@keyframes rotate{
+ to{transform:rotate(360deg)}
+}
+
+/* CHARACTER */
+
+.glow{
+ position:absolute;
+ width:280px;
+ height:280px;
+ border-radius:50%;
+ background:#168bff45;
+ filter:blur(75px);
+ animation:pulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes pulse{
+ to{transform:scale(1.3);opacity:.5}
+}
+
+.character{
+ position:relative;
+ z-index:3;
+ width:min(100%,460px);
+ height:min(78vh,620px);
+ object-fit:contain;
+ filter:
+ drop-shadow(0 0 15px #168dff90)
+ drop-shadow(0 0 35px #00d9ff45);
+ animation:characterFloat 4.5s ease-in-out infinite;
+}
+
+@keyframes characterFloat{
+ 0%,100%{transform:translateY(5px)}
+ 50%{transform:translateY(-15px)}
+}
+
+/* FLOATING LIGHTS */
+
+.spark{
+ position:absolute;
+ color:#cce8ff;
+ font-size:22px;
+ z-index:4;
+ animation:blink 2s ease-in-out infinite alternate;
+ text-shadow:0 0 15px #00cfff;
+}
+
+.s1{top:13%;left:16%}
+.s2{right:12%;top:28%;animation-delay:.8s}
+.s3{left:20%;bottom:16%;animation-delay:1.4s}
+.s4{right:20%;bottom:18%;animation-delay:2s}
+
+@keyframes blink{
+ to{
+  opacity:.2;
+  transform:scale(.6) rotate(25deg);
+ }
+}
+
+/* TEXT */
+
+.copy{
+ position:relative;
+ z-index:6;
+ max-width:490px;
+ animation:fade .9s both;
+}
+
+@keyframes fade{
+ from{opacity:0;transform:translateY(20px)}
+ to{opacity:1;transform:none}
+}
+
+.eyebrow{
+ font-size:10px;
+ letter-spacing:3px;
+ color:#91bde9;
+ font-weight:800;
+}
+
+.code{
+ font:900 clamp(78px,10vw,120px)/1 Nunito,sans-serif;
+ letter-spacing:-7px;
+ color:#c8e5ff;
+ text-shadow:
+ 0 0 20px #168dff,
+ 0 0 45px #77baff66;
+ margin:15px 0;
+}
+
+h1{
+ font-size:clamp(27px,3.3vw,40px);
+ line-height:1.25;
+ margin:0 0 15px;
+}
+
+p{
+ font-size:14px;
+ color:#a2b2ce;
+ line-height:1.9;
+ max-width:440px;
+}
+
+.actions{
+ display:flex;
+ gap:11px;
+ flex-wrap:wrap;
+ margin-top:27px;
+}
+
+a{
+ padding:13px 20px;
+ border-radius:9px;
+ text-decoration:none;
+ font-size:13px;
+ font-weight:800;
+ transition:.3s;
+}
+
+.primary{
+ background:#b9d9ff;
+ color:#152442;
+ box-shadow:0 0 20px #4baaff30;
+}
+
+.secondary{
+ border:1px solid #52688f;
+ color:#dceaff;
+}
+
+a:hover{
+ transform:translateY(-5px);
+ box-shadow:0 0 25px #00bfff65;
+}
+
+.foot{
+ position:fixed;
+ bottom:22px;
+ left:0;
+ right:0;
+ text-align:center;
+ color:#7186a9;
+ font-size:10px;
+ letter-spacing:2px;
+ z-index:6;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+ body{overflow:auto}
+
+ .wrap{
+  min-height:100vh;
+  grid-template-columns:1fr;
+  gap:0;
+  padding:25px 22px 65px;
+  text-align:center;
+ }
+
+ .visual{
+  height:48vh;
+  min-height:300px;
+ }
+
+ .orbit{width:min(300px,75vw)}
+ .orbit2{width:min(250px,65vw)}
+
+ .character{
+  height:47vh;
+  width:min(100%,330px);
+ }
+
+ .copy{margin:-5px auto 0}
+
+ p{
+  margin-left:auto;
+  margin-right:auto;
+ }
+
+ .actions{justify-content:center}
+ .code{font-size:86px}
+}
+
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{
+  animation:none!important;
+  transition:none!important;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="nebula"></div>
+
+<canvas id="starCanvas"></canvas>
+
+<div class="shooting shot1"></div>
+<div class="shooting shot2"></div>
+<div class="shooting shot3"></div>
+<div class="shooting shot4"></div>
+
+<main class="wrap">
+
+ <section class="visual">
+
+  <div class="glow"></div>
+
+  <div class="orbit"></div>
+  <div class="orbit2"></div>
+
+  <span class="spark s1">✦</span>
+  <span class="spark s2">✧</span>
+  <span class="spark s3">✦</span>
+  <span class="spark s4">✧</span>
+
+  <img
+   class="character"
+   src="../../img/killua.png"
+   alt="Anime character with glowing blue electricity"
+  >
+
+ </section>
+
+ <section class="copy">
+
+  <div class="eyebrow">
+   A SMALL DETOUR · ERROR 402
+  </div>
+
+  <div class="code">402</div>
+
+  <h1>Somewhere among the stars.</h1>
+
+  <p>
+   Our little stargazer took a wrong turn.
+   The page you're looking for isn't here,
+   but the night is still full of possibilities.
+  </p>
+
+  <div class="actions">
+   <a class="primary" href="/">Return home ↗</a>
+   <a class="secondary" href="javascript:history.back()">Go back</a>
+  </div>
+
+ </section>
+
+</main>
+
+<div class="foot">KEEP LOOKING UP ✦</div>
+
+<script>
+const canvas = document.getElementById("starCanvas");
+const ctx = canvas.getContext("2d");
+
+let stars = [];
+let width = 0;
+let height = 0;
+
+function resize(){
+ width = canvas.width = window.innerWidth;
+ height = canvas.height = window.innerHeight;
+
+ stars = [];
+
+ // Falling stars and glowing particles
+ for(let i = 0; i < 180; i++){
+  stars.push({
+   x:Math.random()*width,
+   y:Math.random()*height,
+   size:Math.random()*2.2+.4,
+   speed:Math.random()*1.5+.25,
+   opacity:Math.random()*.8+.2,
+   drift:(Math.random()-.5)*.45,
+   color:Math.random()>.5 ? "#42cfff" : "#b7eaff"
+  });
+ }
+}
+
+function draw(){
+ ctx.clearRect(0,0,width,height);
+
+ stars.forEach(star=>{
+  star.y += star.speed;
+  star.x += star.drift;
+
+  if(star.y > height+10){
+   star.y = -10;
+   star.x = Math.random()*width;
+  }
+
+  if(star.x > width+10) star.x = -10;
+  if(star.x < -10) star.x = width+10;
+
+  // Glow
+  ctx.beginPath();
+  ctx.arc(star.x,star.y,star.size*3,0,Math.PI*2);
+  ctx.fillStyle=star.color;
+  ctx.globalAlpha=star.opacity*.16;
+  ctx.fill();
+
+  // Star core
+  ctx.beginPath();
+  ctx.arc(star.x,star.y,star.size,0,Math.PI*2);
+  ctx.fillStyle=star.color;
+  ctx.globalAlpha=star.opacity;
+  ctx.fill();
+ });
+
+ ctx.globalAlpha=1;
+ requestAnimationFrame(draw);
+}
+
+window.addEventListener("resize",resize);
+resize();
+draw();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>400 - Bad Request</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #fff;
+        color: #333;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        min-height: 100vh;
+        margin: auto;
+        padding: 35px 55px 20px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      header {
+        font-family: "Inconsolata", monospace;
+        font-size: 24px;
+        font-weight: bold;
+        color: #222;
+      }
+
+      main {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        gap: 65px;
+        padding: 50px 0;
+      }
+
+      /* Anime character */
+
+      .character {
+        width: 100%;
+        max-width: 420px;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: floating 4s ease-in-out infinite;
+      }
+
+      .character img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+
+      @keyframes floating {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-13px);
+        }
+      }
+
+      /* Text */
+
+      .content {
+        max-width: 480px;
+      }
+
+      h1 {
+        font-family: "Space Mono", monospace;
+        font-size: clamp(36px, 5vw, 52px);
+        line-height: 1.35;
+        margin-bottom: 30px;
+        color: #222;
+      }
+
+      .description {
+        font-family: "Space Mono", monospace;
+        font-size: 18px;
+        line-height: 1.6;
+        color: #4f4f4f;
+        max-width: 370px;
+        margin-bottom: 55px;
+      }
+
+      .home-button {
+        display: inline-block;
+        background: #333;
+        color: white;
+        text-decoration: none;
+        padding: 20px 30px;
+        font-family: "Space Mono", monospace;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: 0.25s;
+      }
+
+      .home-button:hover {
+        background: #555;
+        transform: translateY(-3px);
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px 0 5px;
+        color: #aaa;
+        font-family: Arial, sans-serif;
+        font-size: 13px;
+      }
+
+      /* Mobile */
+
+      @media (max-width: 750px) {
+        .container {
+          padding: 25px 24px 15px;
+        }
+
+        main {
+          grid-template-columns: 1fr;
+          gap: 30px;
+          padding: 40px 0;
+        }
+
+        .character {
+          max-width: 300px;
+        }
+
+        .content {
+          max-width: 100%;
+        }
+
+        h1 {
+          font-size: 38px;
+          margin-bottom: 20px;
+        }
+
+        .description {
+          font-size: 16px;
+          margin-bottom: 35px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .character {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <header>400 NOT FOUND</header>
+
+      <main>
+        <div class="character">
+          <img src="/img/character.png" alt="Anime character" />
+        </div>
+
+        <section class="content">
+          <h1>Bad Request</h1>
+
+          <p class="description">
+            The request could not be understood by the server. The page you're
+            looking for might be unavailable or something went wrong.
+          </p>
+
+          <a href="/" class="home-button"> Back to homepage </a>
+        </section>
+      </main>
+
+      <footer>404 Pages Gallery</footer>
+    </div>
+  </body>
+</html>
